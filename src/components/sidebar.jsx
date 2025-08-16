@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
+import UpgradeModal from './UpgradeModal';
+import InstallModal from './InstallModal';
 
 const Sidebar = () => {
   const [clickedItem, setClickedItem] = useState('home');
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [upgradeModalVisible, setUpgradeModalVisible] = useState(false);
+  const [installModalVisible, setInstallModalVisible] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -372,8 +376,14 @@ const Sidebar = () => {
                 item={item}
                 isSelected={clickedItem === item.id}
                 onClick={() => {
-                  setClickedItem(item.id);
-                  setIsHovered(true);
+                  if (item.id === 'upgrade') {
+                    setUpgradeModalVisible(true);
+                  } else if (item.id === 'install') {
+                    setInstallModalVisible(true);
+                  } else {
+                    setClickedItem(item.id);
+                    setIsHovered(true);
+                  }
                 }}
                 keepHover={setIsHovered}
               />
@@ -395,6 +405,18 @@ const Sidebar = () => {
           />
         )}  
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        visible={upgradeModalVisible}
+        onHide={() => setUpgradeModalVisible(false)}
+      />
+
+      {/* Install Modal */}
+      <InstallModal
+        visible={installModalVisible}
+        onHide={() => setInstallModalVisible(false)}
+      />
     </>
   );
 };
